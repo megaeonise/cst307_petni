@@ -1,21 +1,26 @@
 [gd_scene load_steps=4 format=3 uid="uid://dfh6duy1rhrxa"]
 
-[ext_resource type="Texture2D" uid="uid://cn44jgc0lx5i6" path="res://assets/bg rikth.png" id="1_errlg"]
+[ext_resource type="PackedScene" uid="uid://bcormgflajauk" path="res://scenes/parallax_bg.tscn" id="1_bl13t"]
 [ext_resource type="PackedScene" uid="uid://c4k6pubg1e5gp" path="res://scenes/player.tscn" id="2_bl13t"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bl13t"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="BgRikth" type="Sprite2D" parent="."]
-position = Vector2(320, 176)
-texture = ExtResource("1_errlg")
+[node name="ParallaxBg" parent="." instance=ExtResource("1_bl13t")]
+metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("2_bl13t")]
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
 
 [node name="Area2D" type="StaticBody2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-8, 256)
+position = Vector2(-8, 80)
 shape = SubResource("WorldBoundaryShape2D_bl13t")
 debug_color = Color(0.766217, 0.166117, 1, 0.42)
+
+[editable path="Player"]

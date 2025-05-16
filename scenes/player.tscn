@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c4k6pubg1e5gp"]
+[gd_scene load_steps=11 format=3 uid="uid://c4k6pubg1e5gp"]
 
 [ext_resource type="Script" uid="uid://hu5wng6y52as" path="res://scripts/player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://d3ohmdfdhgv3j" path="res://assets/boc_rikt.png" id="2_qhqgy"]
@@ -8,29 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://dbfq0qqgbpw6q" path="res://assets/2d_lights_and_shadows_neutral_point_light.webp" id="5_sweqy"]
 [ext_resource type="Texture2D" uid="uid://b0bgs3cnno5q0" path="res://assets/boc_rikth_cyn.png" id="6_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://b3nil2b8wl3e6" path="res://assets/boc_rikth_grn.png" id="7_3v2ag"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_272bh"]
-particles_animation = true
-particles_anim_h_frames = 8
-particles_anim_v_frames = 1
-particles_anim_loop = false
-
-[sub_resource type="Curve" id="Curve_5vw27"]
-_data = [Vector2(0, 0.58427), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_kek77"]
-curve = SubResource("Curve_5vw27")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4c57u"]
-gravity = Vector3(0, 0, 0)
-alpha_curve = SubResource("CurveTexture_kek77")
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2hs0m"]
-particles_animation = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
 size = Vector2(31, 49)
@@ -55,14 +32,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_y4r1p")
-}],
-"loop": true,
-"name": &"hang",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": ExtResource("2_qhqgy")
 }],
 "loop": true,
@@ -84,27 +53,18 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 13.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_y4r1p")
+}],
+"loop": true,
+"name": &"running",
+"speed": 5.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_onrkg")
-
-[node name="dashparticless" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_272bh")
-position = Vector2(0, 2)
-emitting = false
-lifetime = 0.5
-preprocess = 0.1
-process_material = SubResource("ParticleProcessMaterial_4c57u")
-
-[node name="wallparticles" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_2hs0m")
-position = Vector2(0, 2)
-emitting = false
-amount = 4
-lifetime = 0.5
-preprocess = 0.1
-process_material = SubResource("ParticleProcessMaterial_4c57u")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, -0.5)
@@ -114,11 +74,8 @@ shape = SubResource("RectangleShape2D_ig7tw")
 texture_filter = 1
 position = Vector2(3, 0)
 sprite_frames = SubResource("SpriteFrames_yaehf")
-animation = &"hang"
+animation = &"running"
 autoplay = "idle"
-
-[node name="DashTimer" type="Timer" parent="."]
-one_shot = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
@@ -130,10 +87,7 @@ texture_scale = 0.1
 [node name="Respawn" type="Timer" parent="."]
 one_shot = true
 
-[node name="WallTimer" type="Timer" parent="."]
-one_shot = true
-
-[node name="DashTimer2" type="Timer" parent="."]
+[node name="Stamina" type="Timer" parent="."]
 one_shot = true
 
 [node name="CoyoteTimer" type="Timer" parent="."]
@@ -142,4 +96,4 @@ one_shot = true
 [node name="HangTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="timeout" from="WallTimer" to="." method="_on_wall_timer_timeout"]
+[connection signal="timeout" from="Stamina" to="." method="_on_stamina_timeout"]

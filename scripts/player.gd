@@ -10,13 +10,14 @@ extends CharacterBody2D
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
 @export var JUMP_VELOCITY = -400.0
-@export var JUMP_CHARGE_TIME = 0.1
+@export var JUMP_CHARGE_TIME = 0.2
 var animated_sprite : AnimatedSprite2D
 var jump_charge_timer = 0
 var jump_charging = false
 var jump_finished = false
 var is_dashing = false
 var is_running = false
+var is_jumping = false
 @export var MAX_STAMINA = 200
 @export var max_speed= Vector2(500, 600)
 @export var min_speed= Vector2(-500, -600)
@@ -51,9 +52,9 @@ func _physics_process(delta: float) -> void:
 				if !hang_timer.is_stopped():
 					velocity += (get_gravity() * delta) * 0.1
 				else:
-					velocity += (get_gravity() * delta) * 0.9
-					if velocity.y > 0:
-						animated_sprite.play("fall")
+					velocity += (get_gravity() * delta) * 1.2
+					#if velocity.y > 0:
+						#animated_sprite.play("fall")
 			else:
 				if can_hang and velocity.y < hang_range and velocity.y >-hang_range and hang_timer.is_stopped():
 					hang_timer.start(hang_length)
@@ -62,9 +63,9 @@ func _physics_process(delta: float) -> void:
 				if !hang_timer.is_stopped():
 					velocity += (get_gravity() * delta) * 0.1
 				else:
-					velocity += (get_gravity() * delta) * 1.5
-					if velocity.y > 0:
-						animated_sprite.play("fall")
+					velocity += (get_gravity() * delta) * 2
+					#if velocity.y > 0:
+						#animated_sprite.play("fall")
 
 				
 		#Movement
@@ -72,18 +73,20 @@ func _physics_process(delta: float) -> void:
 		
 		# Animation
 		if direction != 0 and velocity.y == 0 and not jump_charging:
-			animated_sprite.flip_h = direction < 0
-			animated_sprite.play("run")
+			animated_sprite.flip_h = direction > 0
+			if animated_sprite.get_animation()!="landing" or (animated_sprite.get_animation()=="landing" and animated_sprite.get_frame()==3):
+				animated_sprite.play("run")
 		elif direction == 0 and velocity.y == 0 and not jump_charging:
 			animated_sprite.play("idle")
 		elif direction != 0 and not jump_charging:
-			animated_sprite.flip_h = direction < 0
+			animated_sprite.flip_h = direction > 0
 		
 
 
 		# Jump
 		if Input.is_action_just_pressed("jump") and ((!coyote_timer.is_stopped() and !is_dashing) or (is_on_floor() and !is_dashing)):
 			jump_charging = true
+			print("Why")
 			animated_sprite.play("charge")
 			jump_charge_timer = 0
 			
@@ -91,26 +94,33 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			coyote = true
 			can_hang = true
+			if is_jumping:
+				animated_sprite.play("landing")
+				is_jumping = false
 		
 		if jump_charging:
+			print(jump_charge_timer)
 			jump_charge_timer += delta
 			if jump_charge_timer >= JUMP_CHARGE_TIME or Input.is_action_just_released("jump"):
 				velocity.y = JUMP_VELOCITY
 				jump_charging = false
 				animated_sprite.play("jump")
+				is_jumping = true
 
 		# Movement
-		if Input.is_action_pressed("dash") and !is_running and stamina>=0 and direction!=0:
+		if Input.is_action_pressed("dash") and !is_running and stamina>=0 and direction!=0 and is_on_floor():
 			SPEED = RUN_SPEED
 			is_running = true
 			stamina -= 150*delta
 			stamina_timer.set_paused(true)
-			animated_sprite.play("running")
-		elif Input.is_action_pressed("dash") and is_running and stamina>=0 and direction!=0: 
+			if animated_sprite.get_animation()!="running" or animated_sprite.get_animation()!="landing" or (animated_sprite.get_animation()=="landing" and animated_sprite.get_frame()==3):
+				animated_sprite.play("running")
+		elif Input.is_action_pressed("dash") and is_running and stamina>=0 and direction!=0 and is_on_floor(): 
 			SPEED = RUN_SPEED
 			stamina -= 100*delta
 			stamina_timer.set_paused(true)
-			animated_sprite.play("running")
+			#if animated_sprite.get_animation()!="running" or animated_sprite.get_animation()!="landing" or (animated_sprite.get_animation()=="landing" and animated_sprite.get_frame()==3):
+				#animated_sprite.play("running")
 		else:
 			if stamina_timer.is_paused():
 				stamina_timer.set_paused(false)
@@ -123,10 +133,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
-	
 
-
-		
 		velocity.y = clamp(velocity.y, -400, 400)
 		velocity.x = clamp(velocity.x, -2000, 2000)
 

@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var hang_timer: Timer = $HangTimer
 @onready var stamina_timer: Timer = $Stamina
+@onready var timer: Timer = $Timer
 @export var WALK_SPEED = 150.0
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
@@ -71,6 +72,10 @@ func _physics_process(delta: float) -> void:
 		#Movement
 		is_dashing = Input.is_action_just_pressed("dash")
 		
+		#Mantra
+		if Input.is_action_just_pressed("mantra"):
+			print("Bhoot amar put, petni amar ji")
+		
 		# Animation
 		if direction != 0 and velocity.y == 0 and not jump_charging:
 			animated_sprite.flip_h = direction > 0
@@ -84,11 +89,12 @@ func _physics_process(delta: float) -> void:
 
 
 		# Jump
-		if Input.is_action_just_pressed("jump") and ((!coyote_timer.is_stopped() and !is_dashing) or (is_on_floor() and !is_dashing)):
+		if Input.is_action_just_pressed("jump") and ((!coyote_timer.is_stopped() and !is_dashing and !jump_charging and !is_jumping) or (is_on_floor() and !is_dashing)):
 			jump_charging = true
 			print("Why")
 			animated_sprite.play("charge")
 			jump_charge_timer = 0
+
 			
 		
 		if is_on_floor():
@@ -133,7 +139,11 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
-
+		if stamina <= 50:
+			set_modulate(Color(1, cos(timer.get_time_left()), cos(timer.get_time_left()), 1))
+		else:
+			set_modulate(Color(1,1,1,1))
+		
 		velocity.y = clamp(velocity.y, -400, 400)
 		velocity.x = clamp(velocity.x, -2000, 2000)
 
@@ -150,6 +160,7 @@ func _physics_process(delta: float) -> void:
 	elif respawning:
 		p_light.set_texture_scale(p_light_scale+0.1)
 		p_light.set_energy(p_light_energy+0.02)
+	print(global_position)
 
 
 func _on_kill_plane_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:

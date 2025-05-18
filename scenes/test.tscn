@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfh6duy1rhrxa"]
+[gd_scene load_steps=8 format=3 uid="uid://dfh6duy1rhrxa"]
 
 [ext_resource type="PackedScene" uid="uid://bcormgflajauk" path="res://scenes/parallax_bg.tscn" id="1_bl13t"]
 [ext_resource type="PackedScene" uid="uid://c4k6pubg1e5gp" path="res://scenes/player.tscn" id="2_bl13t"]
 [ext_resource type="Script" uid="uid://t25gvvtxwjmh" path="res://scenes/PlayerCamera.gd" id="2_iyx0m"]
+[ext_resource type="Texture2D" uid="uid://bf8jatfis1ak4" path="res://assets/house rikth.png" id="3_lpvoh"]
+[ext_resource type="Texture2D" uid="uid://3x8de8i7g8oe" path="res://assets/house rikth 2.png" id="5_at5dv"]
+[ext_resource type="Texture2D" uid="uid://b82loyjrjttyj" path="res://assets/tree rikth.png" id="6_jcd4p"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bl13t"]
 
@@ -12,10 +15,26 @@
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-limit_left = 0
 limit_bottom = 360
 script = ExtResource("2_iyx0m")
 target_path = NodePath("../Player")
+
+[node name="HouseRikth" type="Sprite2D" parent="."]
+position = Vector2(112, 0)
+texture = ExtResource("3_lpvoh")
+
+[node name="HouseRikth2" type="Sprite2D" parent="."]
+position = Vector2(70000, 40)
+texture = ExtResource("5_at5dv")
+
+[node name="HouseRikth3" type="Sprite2D" parent="."]
+position = Vector2(-120000, 0)
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("5_at5dv")
+
+[node name="TreeRikth" type="Sprite2D" parent="."]
+position = Vector2(5000, -64)
+texture = ExtResource("6_jcd4p")
 
 [node name="Player" parent="." instance=ExtResource("2_bl13t")]
 metadata/_edit_lock_ = true

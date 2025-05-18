@@ -293,4 +293,9 @@ one_shot = true
 [node name="HangTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+ignore_time_scale = true
+
 [connection signal="timeout" from="Stamina" to="." method="_on_stamina_timeout"]
+[connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]

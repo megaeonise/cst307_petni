@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1ff3vwpv2tmh"]
+
+[ext_resource type="Script" uid="uid://crm6psshrcgwi" path="res://scenes/canvas_modulate.gd" id="1_ldnky"]
+
+[node name="CanvasModulate" type="CanvasModulate"]
+script = ExtResource("1_ldnky")
+
+[node name="FlashTimer" type="Timer" parent="."]
+
+[node name="LightningTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="FlashTimer" to="." method="_on_flash_timer_timeout"]
+[connection signal="timeout" from="LightningTimer" to="." method="_on_lightning_timer_timeout"]

@@ -1,57 +1,104 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcormgflajauk"]
+[gd_scene load_steps=13 format=3 uid="uid://bcormgflajauk"]
 
 [ext_resource type="Texture2D" uid="uid://djkj1tfmqqlke" path="res://assets/sky.png" id="1_opv8y"]
 [ext_resource type="Texture2D" uid="uid://crofww0imquy3" path="res://assets/path.png" id="2_llcxi"]
 [ext_resource type="Texture2D" uid="uid://bu6dv1cu8kqve" path="res://assets/foreground.png" id="3_4j2lk"]
 [ext_resource type="Texture2D" uid="uid://dxojbhbh5k7xj" path="res://assets/trees.png" id="4_4j2lk"]
+[ext_resource type="Texture2D" uid="uid://cs2mqxd2mhpe3" path="res://assets/spikes rikth.png" id="4_48ck1"]
 [ext_resource type="Texture2D" uid="uid://dj2hbvmgtrky6" path="res://assets/grass.png" id="4_bh54y"]
+[ext_resource type="Texture2D" uid="uid://fgfe4rpcjj7v" path="res://assets/mud rikth.png" id="5_w43qo"]
 [ext_resource type="Texture2D" uid="uid://b51tua7ausm13" path="res://assets/cloud.png" id="6_bh54y"]
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_spi1c"]
+texture = ExtResource("4_48ck1")
+texture_region_size = Vector2i(40, 80)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13.3333, 13.3333, 13.3333, 13.3333, 13.3333, 40, -13.3333, 40)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13.3333, 13.3333, 13.3333, 13.3333, 13.3333, 40, -13.3333, 40)
+
+[sub_resource type="TileSet" id="TileSet_rxl0m"]
+tile_size = Vector2i(80, 80)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_spi1c")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_48ck1"]
+texture = ExtResource("5_w43qo")
+texture_region_size = Vector2i(80, 80)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-40, 40, -13.3333, 13.3333, 13.3333, 13.3333, 40, 40, 40, 40, -40, 40)
+
+[sub_resource type="TileSet" id="TileSet_w43qo"]
+tile_size = Vector2i(80, 80)
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_48ck1")
+
 [node name="ParallaxBg" type="Node2D"]
+metadata/_edit_lock_ = true
 
 [node name="Sky" type="Parallax2D" parent="."]
 repeat_size = Vector2(640, 0)
 repeat_times = 5
+metadata/_edit_lock_ = true
 
 [node name="SkySprite" type="Sprite2D" parent="Sky"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("1_opv8y")
+metadata/_edit_lock_ = true
 
 [node name="Clouds" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.7, 0.7)
 repeat_size = Vector2(640, 0)
 autoscroll = Vector2(-8, 0)
 repeat_times = 5
+metadata/_edit_lock_ = true
 
 [node name="CloudsSprite" type="Sprite2D" parent="Clouds"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("6_bh54y")
+metadata/_edit_lock_ = true
 
 [node name="Path" type="Parallax2D" parent="."]
 repeat_size = Vector2(640, 0)
 repeat_times = 5
+metadata/_edit_lock_ = true
 
 [node name="PathSprite" type="Sprite2D" parent="Path"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_llcxi")
+metadata/_edit_lock_ = true
+
+[node name="SPIKE" type="TileMapLayer" parent="."]
+position = Vector2(0, -200)
+tile_set = SubResource("TileSet_rxl0m")
+metadata/_edit_lock_ = true
+
+[node name="MUD" type="TileMapLayer" parent="."]
+position = Vector2(0, -200)
+tile_set = SubResource("TileSet_w43qo")
+metadata/_edit_lock_ = true
 
 [node name="Foreground" type="Parallax2D" parent="."]
 scroll_scale = Vector2(1.1, 1.1)
 repeat_size = Vector2(640, 0)
 repeat_times = 5
+metadata/_edit_lock_ = true
 
 [node name="ForegroundSprite" type="Sprite2D" parent="Foreground"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("3_4j2lk")
+metadata/_edit_lock_ = true
 
 [node name="Trees" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.8, 1)
 repeat_size = Vector2(640, 0)
 repeat_times = 5
+metadata/_edit_lock_ = true
 
 [node name="TreesSprite" type="Sprite2D" parent="Trees"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("4_4j2lk")
+metadata/_edit_lock_ = true
 
 [node name="Grass" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.9, 1)
@@ -61,3 +108,4 @@ repeat_times = 5
 [node name="GrassSprite" type="Sprite2D" parent="Grass"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("4_bh54y")
+metadata/_edit_lock_ = true

@@ -7,11 +7,13 @@ extends CharacterBody2D
 @onready var hang_timer: Timer = $HangTimer
 @onready var stamina_timer: Timer = $Stamina
 @onready var timer: Timer = $Timer
+@onready var mud_timer: Timer = $Mud
 @export var WALK_SPEED = 150.0
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
 @export var JUMP_VELOCITY = -400.0
 @export var JUMP_CHARGE_TIME = 0.2
+@export var sanity = 100
 var animated_sprite : AnimatedSprite2D
 var jump_charge_timer = 0
 var jump_charging = false
@@ -72,9 +74,7 @@ func _physics_process(delta: float) -> void:
 		#Movement
 		is_dashing = Input.is_action_just_pressed("dash")
 		
-		#Mantra
-		if Input.is_action_just_pressed("mantra"):
-			print("Bhoot amar put, petni amar ji")
+
 		
 		# Animation
 		if direction != 0 and velocity.y == 0 and not jump_charging:
@@ -150,17 +150,32 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		for i in get_slide_collision_count():
 			var collision = get_slide_collision(i)
+			print(collision.get_collider().name)
 			if collision.get_collider().name=="SPIKES" or collision.get_collider().name=="SPIKES2":
 				if !respawning:
 					respawning = true
 					p_light.set_enabled(true)
 					respawn_timer.start(1)
+			elif collision.get_collider().name=="SPIKE":
+				if !respawning:
+					respawning = true
+					sanity -= 10
+					p_light.set_enabled(true)
+					respawn_timer.start(1)
+			elif collision.get_collider().name=="MUD":
+				WALK_SPEED = 50
+				RUN_SPEED = 100
+				mud_timer.start(2)
+				
 	if respawning and respawn_timer.is_stopped():
-		get_tree().call("reload_current_scene")
+		position.x -= 1000
+		respawning = false
+		p_light.set_texture_scale(0.1)
+		p_light.set_energy(1)
+		p_light.set_enabled(false)
 	elif respawning:
 		p_light.set_texture_scale(p_light_scale+0.1)
 		p_light.set_energy(p_light_energy+0.02)
-	print(global_position)
 
 
 func _on_kill_plane_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
@@ -172,3 +187,8 @@ func _on_kill_plane_body_shape_entered(body_rid: RID, body: Node2D, body_shape_i
 
 func _on_stamina_timeout() -> void:
 	stamina = MAX_STAMINA
+
+
+func _on_mud_timeout() -> void:
+	WALK_SPEED = 150.0
+	RUN_SPEED = 280.0

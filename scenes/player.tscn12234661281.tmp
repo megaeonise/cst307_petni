@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://c4k6pubg1e5gp"]
+[gd_scene load_steps=43 format=3 uid="uid://c4k6pubg1e5gp"]
 
 [ext_resource type="Script" uid="uid://hu5wng6y52as" path="res://scripts/player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://b5711tc7t8lbb" path="res://assets/windup jump rikth.png" id="2_fjrip"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://dbfq0qqgbpw6q" path="res://assets/2d_lights_and_shadows_neutral_point_light.webp" id="5_sweqy"]
 [ext_resource type="Texture2D" uid="uid://o6vh2ej6y0so" path="res://assets/boy run rikth.png" id="6_smehm"]
 [ext_resource type="Script" uid="uid://gqy83ws3hqig" path="res://scenes/player_dialogue.gd" id="8_smehm"]
-[ext_resource type="PackedScene" uid="uid://c1ff3vwpv2tmh" path="res://scenes/canvas_modulate.tscn" id="8_ur7pv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
 size = Vector2(43.5, 72)
@@ -267,7 +266,6 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_onrkg")
-JUMP_CHARGE_TIME = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2.25, 4)
@@ -302,10 +300,6 @@ one_shot = true
 autostart = true
 ignore_time_scale = true
 
-[node name="Mud" type="Timer" parent="."]
-
-[node name="Sanity" parent="." instance=ExtResource("8_ur7pv")]
-
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color(0, 0, 0, 1)
 offset_left = 32.0
@@ -314,7 +308,6 @@ offset_right = 160.0
 theme = SubResource("Theme_smehm")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
-layout_mode = 0
 offset_right = 128.0
 offset_bottom = 34.0
 theme_override_font_sizes/bold_italics_font_size = 1
@@ -329,8 +322,5 @@ script = ExtResource("8_smehm")
 
 [connection signal="timeout" from="Stamina" to="." method="_on_stamina_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
-[connection signal="timeout" from="Mud" to="." method="_on_mud_timeout"]
 [connection signal="timeout" from="Panel/TextSpeed" to="Panel/RichTextLabel" method="_on_text_speed_timeout"]
 [connection signal="timeout" from="Panel/TextVanish" to="Panel/RichTextLabel" method="_on_text_vanish_timeout"]
-
-[editable path="Sanity"]

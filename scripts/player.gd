@@ -320,3 +320,10 @@ func _on_sanity_duration_timeout() -> void:
 
 func _on_sanity_drain_timeout() -> void:
 	sanity -= 2
+
+
+func _on_end_body_entered(body: Node2D) -> void:
+	sanity_drain_timer.stop()
+	sanity = 100
+	control = false
+	velocity = Vector2.ZERO

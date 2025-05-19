@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://dfh6duy1rhrxa"]
+[gd_scene load_steps=37 format=4 uid="uid://dfh6duy1rhrxa"]
 
 [ext_resource type="PackedScene" uid="uid://c4k6pubg1e5gp" path="res://scenes/player.tscn" id="2_bl13t"]
 [ext_resource type="Script" uid="uid://t25gvvtxwjmh" path="res://scenes/PlayerCamera.gd" id="2_iyx0m"]
@@ -18,6 +18,8 @@
 [ext_resource type="Script" uid="uid://cp1kppj4oa1a6" path="res://scenes/petni_text.gd" id="9_yk7ts"]
 [ext_resource type="SpriteFrames" uid="uid://c5oyy1smenx63" path="res://scenes/petni.tres" id="14_xrtyr"]
 [ext_resource type="Texture2D" uid="uid://bu6dv1cu8kqve" path="res://assets/foreground.png" id="18_kay4s"]
+[ext_resource type="Script" uid="uid://d1tg2q1r3qvym" path="res://scenes/end.gd" id="19_c6rvn"]
+[ext_resource type="Texture2D" uid="uid://d3ohmdfdhgv3j" path="res://assets/boc_rikt.png" id="20_n74k2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_spi1c"]
 texture = ExtResource("7_pn65j")
@@ -92,6 +94,9 @@ distance = -8.0
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lpvoh"]
 normal = Vector2(1, 0)
 distance = -136.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_si7kk"]
+size = Vector2(344, 160)
 
 [node name="Node2D" type="Node2D"]
 metadata/_edit_vertical_guides_ = [3000.0]
@@ -319,6 +324,34 @@ position = Vector2(-184, 80)
 shape = SubResource("WorldBoundaryShape2D_lpvoh")
 debug_color = Color(0.766217, 0.166117, 1, 0.42)
 
+[node name="End" type="Area2D" parent="."]
+position = Vector2(80000, 0)
+script = ExtResource("19_c6rvn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="End"]
+position = Vector2(88, 8)
+shape = SubResource("RectangleShape2D_si7kk")
+
+[node name="Box" type="Sprite2D" parent="End"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+position = Vector2(31.9975, 36)
+scale = Vector2(82.4998, 40.25)
+texture = ExtResource("20_n74k2")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="End"]
+modulate = Color(2, 2, 2, 1)
+offset_left = -320.0
+offset_top = -56.0
+offset_right = 96.0
+offset_bottom = 64.0
+text = "Congratulations.
+You have reached your mama's home. "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextSpeed" type="Timer" parent="End"]
+
 [connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger" to="ParallaxBg/PetniBanyan" method="_on_petni_trigger_body_entered"]
 [connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger" to="ParallaxBg/Player" method="_on_petni_trigger_body_entered"]
 [connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger2" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_petni_trigger_2_body_entered"]
@@ -331,6 +364,10 @@ debug_color = Color(0.766217, 0.166117, 1, 0.42)
 [connection signal="body_entered" from="ParallaxBg/Tutorial" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_body_entered"]
 [connection signal="body_entered" from="ParallaxBg/Tutorial2" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_2_body_entered"]
 [connection signal="body_entered" from="ParallaxBg/Tutorial3" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_3_body_entered"]
+[connection signal="body_entered" from="End" to="ParallaxBg/Player" method="_on_end_body_entered"]
+[connection signal="body_entered" from="End" to="ParallaxBg/Player/Sanity" method="_on_end_body_entered"]
+[connection signal="body_entered" from="End" to="End" method="_on_body_entered"]
+[connection signal="timeout" from="End/TextSpeed" to="End" method="_on_text_speed_timeout"]
 
 [editable path="ParallaxBg/Player"]
 [editable path="ParallaxBg/Player/Sanity"]

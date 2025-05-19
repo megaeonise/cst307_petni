@@ -7,7 +7,7 @@ extends RichTextLabel
 @export var textspeed = 0.2
 @export var char_per_tick = 1
 @export var max_chars = 35
-var text_array = ["Bhoot amar poot, petni amar jhee", "Press F to recite mantra", "Hold Shift to run", "Go right to reach your uncle's home"]
+var text_array = ["Bhoot amar poot, petni amar jhee", "Press F to recite mantra", "Hold Shift to run", "Go right to reach your mama's home"]
 var tutorial = false
 
 # Called when the node enters the scene tree for the first time.
@@ -20,7 +20,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	#Mantra
 	visible_characters = chars
-	if Input.is_action_just_pressed("mantra") or tutorial:
+	if Input.is_action_just_pressed("mantra") and get_text()==text_array[0]:
+		print(text)
+		chars = 0
+		panel.set_visible(true)
+		TextSpeed.start(textspeed)
+		if tutorial:
+			tutorial = false
+			textspeed = textspeed*2
+	if tutorial:
 		print(text)
 		chars = 0
 		panel.set_visible(true)

@@ -5,6 +5,7 @@ extends CanvasModulate
 var max_x = 0
 var max_x_divided = 0
 var rng = RandomNumberGenerator.new()
+var end = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -27,10 +28,15 @@ func _on_flash_timer_timeout() -> void:
 
 
 func _on_lightning_timer_timeout() -> void:
-	if max_x>35000:
+	if max_x>35000 and !end:
 		if rng.randf()>1-max_x_divided/1.2:
 			print("?")
 			if rng.randf()>0.85:
 				print("flash")
 				set_color(Color(7,7,7,1))
-				flash.start(0.9)
+				flash.start(1.2)
+
+
+func _on_end_body_entered(body: Node2D) -> void:
+	end = true
+	

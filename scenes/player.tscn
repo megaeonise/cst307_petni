@@ -267,6 +267,7 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_onrkg")
+WALK_SPEED = 1000.0
 JUMP_CHARGE_TIME = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -304,6 +305,8 @@ ignore_time_scale = true
 
 [node name="Mud" type="Timer" parent="."]
 
+[node name="Freeze" type="Timer" parent="."]
+
 [node name="Sanity" parent="." instance=ExtResource("8_ur7pv")]
 
 [node name="Panel" type="Panel" parent="."]
@@ -319,7 +322,6 @@ offset_right = 128.0
 offset_bottom = 34.0
 theme_override_font_sizes/bold_italics_font_size = 1
 theme_override_font_sizes/normal_font_size = 12
-text = "Bhoot amar poot, petni amar jhee"
 fit_content = true
 script = ExtResource("8_smehm")
 
@@ -330,6 +332,7 @@ script = ExtResource("8_smehm")
 [connection signal="timeout" from="Stamina" to="." method="_on_stamina_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="Mud" to="." method="_on_mud_timeout"]
+[connection signal="timeout" from="Freeze" to="." method="_on_freeze_timeout"]
 [connection signal="timeout" from="Panel/TextSpeed" to="Panel/RichTextLabel" method="_on_text_speed_timeout"]
 [connection signal="timeout" from="Panel/TextVanish" to="Panel/RichTextLabel" method="_on_text_vanish_timeout"]
 

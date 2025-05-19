@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bcormgflajauk"]
+[gd_scene load_steps=18 format=3 uid="uid://bcormgflajauk"]
 
 [ext_resource type="Texture2D" uid="uid://djkj1tfmqqlke" path="res://assets/sky.png" id="1_opv8y"]
 [ext_resource type="Texture2D" uid="uid://crofww0imquy3" path="res://assets/path.png" id="2_llcxi"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dxojbhbh5k7xj" path="res://assets/trees.png" id="4_4j2lk"]
 [ext_resource type="Texture2D" uid="uid://cs2mqxd2mhpe3" path="res://assets/spikes rikth.png" id="4_48ck1"]
 [ext_resource type="Texture2D" uid="uid://dj2hbvmgtrky6" path="res://assets/grass.png" id="4_bh54y"]
+[ext_resource type="Texture2D" uid="uid://cack1enimoew4" path="res://assets/small tree rikth.png" id="5_spi1c"]
 [ext_resource type="Texture2D" uid="uid://fgfe4rpcjj7v" path="res://assets/mud rikth.png" id="5_w43qo"]
 [ext_resource type="Texture2D" uid="uid://b51tua7ausm13" path="res://assets/cloud.png" id="6_bh54y"]
 
@@ -32,6 +33,24 @@ texture_region_size = Vector2i(80, 80)
 tile_size = Vector2i(80, 80)
 physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_48ck1")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6pvsh"]
+texture = ExtResource("5_spi1c")
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_q24x8"]
+tile_size = Vector2i(16, 8)
+sources/0 = SubResource("TileSetAtlasSource_6pvsh")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w43qo"]
+texture = ExtResource("5_spi1c")
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_spi1c"]
+tile_size = Vector2i(16, 8)
+sources/0 = SubResource("TileSetAtlasSource_w43qo")
 
 [node name="ParallaxBg" type="Node2D"]
 metadata/_edit_lock_ = true
@@ -68,27 +87,6 @@ scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_llcxi")
 metadata/_edit_lock_ = true
 
-[node name="SPIKE" type="TileMapLayer" parent="."]
-position = Vector2(0, -200)
-tile_set = SubResource("TileSet_rxl0m")
-metadata/_edit_lock_ = true
-
-[node name="MUD" type="TileMapLayer" parent="."]
-position = Vector2(0, -200)
-tile_set = SubResource("TileSet_w43qo")
-metadata/_edit_lock_ = true
-
-[node name="Foreground" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.1, 1.1)
-repeat_size = Vector2(640, 0)
-repeat_times = 5
-metadata/_edit_lock_ = true
-
-[node name="ForegroundSprite" type="Sprite2D" parent="Foreground"]
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("3_4j2lk")
-metadata/_edit_lock_ = true
-
 [node name="Trees" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.8, 1)
 repeat_size = Vector2(640, 0)
@@ -108,4 +106,35 @@ repeat_times = 5
 [node name="GrassSprite" type="Sprite2D" parent="Grass"]
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("4_bh54y")
+metadata/_edit_lock_ = true
+
+[node name="SPIKE" type="TileMapLayer" parent="."]
+position = Vector2(0, -200)
+tile_set = SubResource("TileSet_rxl0m")
+metadata/_edit_lock_ = true
+
+[node name="MUD" type="TileMapLayer" parent="."]
+position = Vector2(0, -200)
+tile_set = SubResource("TileSet_w43qo")
+metadata/_edit_lock_ = true
+
+[node name="TREE" type="TileMapLayer" parent="."]
+position = Vector2(0, -200)
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_q24x8")
+
+[node name="TREE2" type="TileMapLayer" parent="."]
+position = Vector2(0, -200)
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_spi1c")
+
+[node name="Foreground" type="Parallax2D" parent="."]
+scroll_scale = Vector2(1.1, 1.1)
+repeat_size = Vector2(640, 0)
+repeat_times = 5
+metadata/_edit_lock_ = true
+
+[node name="ForegroundSprite" type="Sprite2D" parent="Foreground"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("3_4j2lk")
 metadata/_edit_lock_ = true

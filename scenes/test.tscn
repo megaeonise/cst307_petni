@@ -1,12 +1,103 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfh6duy1rhrxa"]
+[gd_scene load_steps=36 format=4 uid="uid://dfh6duy1rhrxa"]
 
-[ext_resource type="PackedScene" uid="uid://bcormgflajauk" path="res://scenes/parallax_bg.tscn" id="1_bl13t"]
 [ext_resource type="PackedScene" uid="uid://c4k6pubg1e5gp" path="res://scenes/player.tscn" id="2_bl13t"]
 [ext_resource type="Script" uid="uid://t25gvvtxwjmh" path="res://scenes/PlayerCamera.gd" id="2_iyx0m"]
+[ext_resource type="Texture2D" uid="uid://djkj1tfmqqlke" path="res://assets/sky.png" id="2_xrtyr"]
+[ext_resource type="Texture2D" uid="uid://b51tua7ausm13" path="res://assets/cloud.png" id="3_daiq8"]
 [ext_resource type="Texture2D" uid="uid://bf8jatfis1ak4" path="res://assets/house rikth.png" id="3_lpvoh"]
+[ext_resource type="Texture2D" uid="uid://crofww0imquy3" path="res://assets/path.png" id="4_c6rvn"]
 [ext_resource type="Script" uid="uid://cxq2k4ocec2la" path="res://scenes/parallax_bg.gd" id="4_yk7ts"]
 [ext_resource type="Texture2D" uid="uid://3x8de8i7g8oe" path="res://assets/house rikth 2.png" id="5_at5dv"]
+[ext_resource type="Texture2D" uid="uid://dxojbhbh5k7xj" path="res://assets/trees.png" id="5_n74k2"]
 [ext_resource type="Texture2D" uid="uid://b82loyjrjttyj" path="res://assets/tree rikth.png" id="6_jcd4p"]
+[ext_resource type="Texture2D" uid="uid://dj2hbvmgtrky6" path="res://assets/grass.png" id="6_si7kk"]
+[ext_resource type="Texture2D" uid="uid://cs2mqxd2mhpe3" path="res://assets/spikes rikth.png" id="7_pn65j"]
+[ext_resource type="Texture2D" uid="uid://csxydtxcqadcj" path="res://assets/petni.png" id="7_uacia"]
+[ext_resource type="Texture2D" uid="uid://fgfe4rpcjj7v" path="res://assets/mud rikth.png" id="8_5f8cm"]
+[ext_resource type="Script" uid="uid://d4j8f0lrxiuy7" path="res://scenes/petni_banyan.gd" id="8_yk7ts"]
+[ext_resource type="Texture2D" uid="uid://cack1enimoew4" path="res://assets/small tree rikth.png" id="9_gm488"]
+[ext_resource type="Script" uid="uid://cp1kppj4oa1a6" path="res://scenes/petni_text.gd" id="9_yk7ts"]
+[ext_resource type="Texture2D" uid="uid://bu6dv1cu8kqve" path="res://assets/foreground.png" id="18_kay4s"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_spi1c"]
+texture = ExtResource("7_pn65j")
+texture_region_size = Vector2i(40, 80)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13.3333, 13.3333, 13.3333, 13.3333, 13.3333, 40, -13.3333, 40)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13.3333, 13.3333, 13.3333, 13.3333, 13.3333, 40, -13.3333, 40)
+
+[sub_resource type="TileSet" id="TileSet_rxl0m"]
+tile_size = Vector2i(80, 80)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_spi1c")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_48ck1"]
+texture = ExtResource("8_5f8cm")
+texture_region_size = Vector2i(80, 80)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-40, 40, -13.3333, 13.3333, 13.3333, 13.3333, 40, 40, 40, 40, -40, 40)
+
+[sub_resource type="TileSet" id="TileSet_w43qo"]
+tile_size = Vector2i(80, 80)
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_48ck1")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6pvsh"]
+texture = ExtResource("9_gm488")
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_q24x8"]
+tile_size = Vector2i(16, 8)
+sources/0 = SubResource("TileSetAtlasSource_6pvsh")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajshl"]
+atlas = ExtResource("7_uacia")
+region = Rect2(0, 0, 90, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghpyy"]
+atlas = ExtResource("7_uacia")
+region = Rect2(90, 0, 90, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44saj"]
+atlas = ExtResource("7_uacia")
+region = Rect2(180, 0, 90, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7mbro"]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ajshl")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ghpyy")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_44saj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ff6ho"]
+size = Vector2(40, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yk7ts"]
+size = Vector2(40, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uacia"]
+size = Vector2(120, 208)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w43qo"]
+texture = ExtResource("9_gm488")
+texture_region_size = Vector2i(64, 96)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_spi1c"]
+tile_size = Vector2i(16, 8)
+sources/0 = SubResource("TileSetAtlasSource_w43qo")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bl13t"]
 distance = -8.0
@@ -17,42 +108,187 @@ distance = -136.0
 
 [node name="Node2D" type="Node2D"]
 
-[node name="ParallaxBg" parent="." instance=ExtResource("1_bl13t")]
+[node name="ParallaxBg" type="Node2D" parent="."]
 script = ExtResource("4_yk7ts")
+metadata/_edit_lock_ = true
 
-[node name="SPIKE" parent="ParallaxBg" index="3"]
-tile_map_data = PackedByteArray(0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+[node name="Sky" type="Parallax2D" parent="ParallaxBg"]
+repeat_size = Vector2(640, 0)
+repeat_times = 5
+metadata/_edit_lock_ = true
 
-[node name="MUD" parent="ParallaxBg" index="4"]
-tile_map_data = PackedByteArray(0, 0, 5, 0, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 7, 0, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 8, 0, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0)
+[node name="SkySprite" type="Sprite2D" parent="ParallaxBg/Sky"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_xrtyr")
+metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Clouds" type="Parallax2D" parent="ParallaxBg"]
+scroll_scale = Vector2(0.7, 0.7)
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(-8, 0)
+repeat_times = 5
+metadata/_edit_lock_ = true
+
+[node name="CloudsSprite" type="Sprite2D" parent="ParallaxBg/Clouds"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("3_daiq8")
+metadata/_edit_lock_ = true
+
+[node name="Path" type="Parallax2D" parent="ParallaxBg"]
+repeat_size = Vector2(640, 0)
+repeat_times = 5
+metadata/_edit_lock_ = true
+
+[node name="PathSprite" type="Sprite2D" parent="ParallaxBg/Path"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("4_c6rvn")
+metadata/_edit_lock_ = true
+
+[node name="Trees" type="Parallax2D" parent="ParallaxBg"]
+scroll_scale = Vector2(0.8, 1)
+repeat_size = Vector2(640, 0)
+repeat_times = 5
+metadata/_edit_lock_ = true
+
+[node name="TreesSprite" type="Sprite2D" parent="ParallaxBg/Trees"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_n74k2")
+metadata/_edit_lock_ = true
+
+[node name="Grass" type="Parallax2D" parent="ParallaxBg"]
+scroll_scale = Vector2(0.9, 1)
+repeat_size = Vector2(640, 0)
+repeat_times = 5
+
+[node name="GrassSprite" type="Sprite2D" parent="ParallaxBg/Grass"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("6_si7kk")
+metadata/_edit_lock_ = true
+
+[node name="SPIKE" type="TileMapLayer" parent="ParallaxBg"]
+position = Vector2(0, -200)
+tile_set = SubResource("TileSet_rxl0m")
+metadata/_edit_lock_ = true
+
+[node name="MUD" type="TileMapLayer" parent="ParallaxBg"]
+position = Vector2(0, -200)
+tile_set = SubResource("TileSet_w43qo")
+metadata/_edit_lock_ = true
+
+[node name="TREE" type="TileMapLayer" parent="ParallaxBg"]
+position = Vector2(0, -200)
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAUAAsAAAAAAAAAAACGAAsAAAAAAAAAAACFAAsAAAAAAAAAAACDAAsAAAAAAAAAAAB6AAsAAAAAAAAAAAB+AAsAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_q24x8")
+
+[node name="HouseRikth" type="Sprite2D" parent="ParallaxBg"]
+position = Vector2(112, 8)
+texture = ExtResource("3_lpvoh")
+
+[node name="HouseRikth2" type="Sprite2D" parent="ParallaxBg"]
+position = Vector2(70000, 40)
+texture = ExtResource("5_at5dv")
+
+[node name="TreeRikth" type="Sprite2D" parent="ParallaxBg"]
+position = Vector2(5000, -64)
+texture = ExtResource("6_jcd4p")
+
+[node name="Camera2D" type="Camera2D" parent="ParallaxBg"]
 limit_bottom = 360
 script = ExtResource("2_iyx0m")
 target_path = NodePath("../Player")
 
-[node name="HouseRikth" type="Sprite2D" parent="."]
-position = Vector2(112, 0)
-texture = ExtResource("3_lpvoh")
+[node name="PetniBanyan" type="AnimatedSprite2D" parent="ParallaxBg"]
+modulate = Color(0.625597, 0.625597, 0.625597, 1)
+position = Vector2(4976, 40)
+sprite_frames = SubResource("SpriteFrames_7mbro")
+autoplay = "default"
+frame_progress = 0.108628
+script = ExtResource("8_yk7ts")
 
-[node name="HouseRikth2" type="Sprite2D" parent="."]
-position = Vector2(70000, 40)
-texture = ExtResource("5_at5dv")
+[node name="PetniTrigger" type="Area2D" parent="ParallaxBg/PetniBanyan"]
+position = Vector2(760, 0)
 
-[node name="HouseRikth3" type="Sprite2D" parent="."]
+[node name="PetniArea" type="CollisionShape2D" parent="ParallaxBg/PetniBanyan/PetniTrigger"]
+position = Vector2(4, -84)
+shape = SubResource("RectangleShape2D_ff6ho")
+metadata/_edit_lock_ = true
+
+[node name="PetniTrigger2" type="Area2D" parent="ParallaxBg/PetniBanyan"]
+position = Vector2(-256, 16)
+monitoring = false
+
+[node name="PetniArea" type="CollisionShape2D" parent="ParallaxBg/PetniBanyan/PetniTrigger2"]
+position = Vector2(4, -84)
+shape = SubResource("RectangleShape2D_yk7ts")
+metadata/_edit_lock_ = true
+
+[node name="PetniTrigger3" type="Area2D" parent="ParallaxBg/PetniBanyan"]
+position = Vector2(168, 8)
+monitoring = false
+
+[node name="PetniArea" type="CollisionShape2D" parent="ParallaxBg/PetniBanyan/PetniTrigger3"]
+position = Vector2(4, -84)
+shape = SubResource("RectangleShape2D_yk7ts")
+metadata/_edit_lock_ = true
+
+[node name="Panel" type="Panel" parent="ParallaxBg/PetniBanyan"]
+modulate = Color(2, 0.186, 0, 1)
+offset_left = -48.0
+offset_top = 8.0
+offset_right = 48.0
+offset_bottom = 32.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ParallaxBg/PetniBanyan/Panel"]
+layout_mode = 0
+offset_right = 96.0
+offset_bottom = 40.0
+theme_override_font_sizes/italics_font_size = 12
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "[i]Come closer...[i]"
+script = ExtResource("9_yk7ts")
+metadata/_edit_lock_ = true
+
+[node name="TextSpeed" type="Timer" parent="ParallaxBg/PetniBanyan/Panel"]
+
+[node name="TextVanish" type="Timer" parent="ParallaxBg/PetniBanyan/Panel"]
+
+[node name="Tutorial" type="Area2D" parent="ParallaxBg"]
+position = Vector2(2160, 64)
+
+[node name="TutorialArea" type="CollisionShape2D" parent="ParallaxBg/Tutorial"]
+position = Vector2(4, -72)
+shape = SubResource("RectangleShape2D_uacia")
+metadata/_edit_lock_ = true
+
+[node name="HouseRikth3" type="Sprite2D" parent="ParallaxBg"]
 position = Vector2(-120000, 0)
 scale = Vector2(1.3, 1.3)
 texture = ExtResource("5_at5dv")
 
-[node name="TreeRikth" type="Sprite2D" parent="."]
-position = Vector2(5000, -64)
-texture = ExtResource("6_jcd4p")
-
-[node name="Player" parent="." instance=ExtResource("2_bl13t")]
+[node name="Player" parent="ParallaxBg" instance=ExtResource("2_bl13t")]
 metadata/_edit_lock_ = true
 
-[node name="Panel" parent="Player" index="11"]
+[node name="Panel" parent="ParallaxBg/Player" index="12"]
 visible = false
+
+[node name="TREE2" type="TileMapLayer" parent="ParallaxBg"]
+position = Vector2(0, -200)
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAWAA0AAAAAAAAAAAB7AA0AAAAAAAAAAAB9AA0AAAAAAAAAAACBAA0AAAAAAAAAAACIAA0AAAAAAAAAAAASAA8AAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_spi1c")
+
+[node name="Foreground" type="Parallax2D" parent="ParallaxBg"]
+scroll_scale = Vector2(1.1, 1.1)
+repeat_size = Vector2(640, 0)
+repeat_times = 5
+metadata/_edit_lock_ = true
+
+[node name="ForegroundSprite" type="Sprite2D" parent="ParallaxBg/Foreground"]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("18_kay4s")
+metadata/_edit_lock_ = true
 
 [node name="Floor" type="StaticBody2D" parent="."]
 metadata/_edit_lock_ = true
@@ -70,6 +306,16 @@ position = Vector2(-184, 80)
 shape = SubResource("WorldBoundaryShape2D_lpvoh")
 debug_color = Color(0.766217, 0.166117, 1, 0.42)
 
-[editable path="ParallaxBg"]
-[editable path="Player"]
-[editable path="Player/Sanity"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger" to="ParallaxBg/PetniBanyan" method="_on_petni_trigger_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger" to="ParallaxBg/Player" method="_on_petni_trigger_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger2" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_petni_trigger_2_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger2" to="ParallaxBg/Player" method="_on_petni_trigger_2_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger3" to="ParallaxBg/PetniBanyan" method="_on_petni_trigger_3_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger3" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_petni_trigger_3_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/PetniBanyan/PetniTrigger3" to="ParallaxBg/Player" method="_on_petni_trigger_3_body_entered"]
+[connection signal="timeout" from="ParallaxBg/PetniBanyan/Panel/TextSpeed" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_text_speed_timeout"]
+[connection signal="timeout" from="ParallaxBg/PetniBanyan/Panel/TextVanish" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_text_vanish_timeout"]
+[connection signal="body_entered" from="ParallaxBg/Tutorial" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_body_entered"]
+
+[editable path="ParallaxBg/Player"]
+[editable path="ParallaxBg/Player/Sanity"]

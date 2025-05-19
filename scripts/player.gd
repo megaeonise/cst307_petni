@@ -8,6 +8,7 @@ extends CharacterBody2D
 @onready var stamina_timer: Timer = $Stamina
 @onready var timer: Timer = $Timer
 @onready var mud_timer: Timer = $Mud
+@onready var freeze_timer: Timer = $Freeze
 @export var WALK_SPEED = 150.0
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
@@ -21,6 +22,9 @@ var jump_finished = false
 var is_dashing = false
 var is_running = false
 var is_jumping = false
+var tp_counter = 0
+var tp_forward = false
+var control = true
 @export var MAX_STAMINA = 200
 @export var max_speed= Vector2(500, 600)
 @export var min_speed= Vector2(-500, -600)
@@ -47,7 +51,7 @@ func _physics_process(delta: float) -> void:
 			if coyote:
 				coyote_timer.start(0.1)
 				coyote = false
-			if Input.is_action_pressed("jump"):
+			if Input.is_action_pressed("jump") and control:
 				if can_hang and velocity.y < hang_range and velocity.y >-hang_range and hang_timer.is_stopped():
 					hang_timer.start(hang_length)
 					can_hang = false
@@ -89,7 +93,7 @@ func _physics_process(delta: float) -> void:
 
 
 		# Jump
-		if Input.is_action_just_pressed("jump") and ((!coyote_timer.is_stopped() and !is_dashing and !jump_charging and !is_jumping) or (is_on_floor() and !is_dashing)):
+		if control and Input.is_action_just_pressed("jump") and ((!coyote_timer.is_stopped() and !is_dashing and !jump_charging and !is_jumping) or (is_on_floor() and !is_dashing)):
 			jump_charging = true
 			print("Why")
 			animated_sprite.play("charge")
@@ -114,14 +118,14 @@ func _physics_process(delta: float) -> void:
 				is_jumping = true
 
 		# Movement
-		if Input.is_action_pressed("dash") and !is_running and stamina>=0 and direction!=0 and is_on_floor():
+		if control and Input.is_action_pressed("dash") and !is_running and stamina>=0 and direction!=0 and is_on_floor():
 			SPEED = RUN_SPEED
 			is_running = true
 			stamina -= 150*delta
 			stamina_timer.set_paused(true)
 			if animated_sprite.get_animation()!="running" or animated_sprite.get_animation()!="landing" or (animated_sprite.get_animation()=="landing" and animated_sprite.get_frame()==3):
 				animated_sprite.play("running")
-		elif Input.is_action_pressed("dash") and is_running and stamina>=0 and direction!=0 and is_on_floor(): 
+		elif control and Input.is_action_pressed("dash") and is_running and stamina>=0 and direction!=0 and is_on_floor(): 
 			SPEED = RUN_SPEED
 			stamina -= 100*delta
 			stamina_timer.set_paused(true)
@@ -131,12 +135,13 @@ func _physics_process(delta: float) -> void:
 			if stamina_timer.is_paused():
 				stamina_timer.set_paused(false)
 				stamina_timer.start(1)
-			SPEED = WALK_SPEED
+			if is_on_floor():
+				SPEED = WALK_SPEED
 			is_running = false
-		if direction:
+		if direction and control:
 			if not jump_charging:
 				velocity.x = direction * SPEED
-		else:
+		elif control:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 		if stamina <= 50:
@@ -150,7 +155,6 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		for i in get_slide_collision_count():
 			var collision = get_slide_collision(i)
-			print(collision.get_collider().name)
 			if collision.get_collider().name=="SPIKES" or collision.get_collider().name=="SPIKES2":
 				if !respawning:
 					respawning = true
@@ -168,7 +172,14 @@ func _physics_process(delta: float) -> void:
 				mud_timer.start(2)
 				
 	if respawning and respawn_timer.is_stopped():
-		position.x -= 1000
+		if tp_counter==1:
+			position.x -= 3000
+			tp_counter += 1
+		elif tp_forward:
+			position.x += 3000
+			tp_forward = false
+		else:
+			position.x -= 1000
 		respawning = false
 		p_light.set_texture_scale(0.1)
 		p_light.set_energy(1)
@@ -192,3 +203,38 @@ func _on_stamina_timeout() -> void:
 func _on_mud_timeout() -> void:
 	WALK_SPEED = 150.0
 	RUN_SPEED = 280.0
+
+
+func _on_petni_trigger_body_entered(body: Node2D) -> void:
+	if tp_counter==0:
+		tp_counter += 1
+		if !respawning:
+			respawning = true
+			p_light.set_enabled(true)
+			respawn_timer.start(1)
+
+
+func _on_petni_trigger_2_body_entered(body: Node2D) -> void:
+	control = false
+	print("why am i not frozen", control)
+	freeze_timer.start(2)
+	tp_forward = true
+	velocity = Vector2(0,0)
+
+
+func _on_freeze_timeout() -> void:
+	control = true
+	if !respawning:
+		respawning = true
+		p_light.set_enabled(true)
+		respawn_timer.start(1)
+	freeze_timer.stop()
+	print(tp_counter)
+
+
+func _on_petni_trigger_3_body_entered(body: Node2D) -> void:
+	control = false
+	print("why am i not frozen", control)
+	tp_forward = true
+	freeze_timer.start(2)
+	velocity = Vector2(0,0)

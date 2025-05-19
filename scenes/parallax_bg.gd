@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var player = get_node("../Player")
+@onready var player = get_node("Player")
 var max_x = 0
 var max_x_divided = 0
 # Called when the node enters the scene tree for the first time.

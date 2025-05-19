@@ -14,13 +14,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(current_alpha)
 	if current_alpha < 1:
 		current_alpha = black_box.get_modulate().a
 	if becoming_vis and current_alpha<1:
 		black_box.set_modulate(Color(1,1,1,current_alpha+0.5*delta))
 	if current_alpha>1 and current_alpha!=1.2:
-		print("hello")
 		current_alpha = 1.2
 		TextSpeed.start(0.1)
 		

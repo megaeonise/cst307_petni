@@ -16,6 +16,9 @@ extends CharacterBody2D
 @onready var sanity_drain_timer: Timer = $SanityDrain
 @onready var petni: AnimatedSprite2D = $Petni
 @onready var current_position = Vector2.ZERO
+@onready var jump_sfx: AudioStreamPlayer2D = $Jump
+@onready var run_sfx: AudioStreamPlayer2D = $Run
+@onready var death_sfx: AudioStreamPlayer2D = $Death2
 @export var WALK_SPEED = 120.0
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
@@ -66,6 +69,7 @@ func _physics_process(delta: float) -> void:
 			max_x = global_position.x
 			max_x_divided = max_x/100000
 			sanity_modulate.set_color(Color(1-max_x_divided/2,1-max_x_divided/2,1-max_x_divided/2,1))
+			animated_sprite.set_self_modulate(Color(1+max_x_divided*1.5,1+max_x_divided*1.5,1+max_x_divided*1.5,1))
 	if !respawning:
 		if not is_on_floor():
 			if coyote:
@@ -142,9 +146,13 @@ func _physics_process(delta: float) -> void:
 				jump_charging = false
 				animated_sprite.play("jump")
 				is_jumping = true
+				jump_sfx.play()
 
 		# Movement
 		if control and Input.is_action_pressed("dash") and !is_running and stamina>=0 and direction!=0 and is_on_floor():
+			if !run_sfx.is_playing():
+				print("running")
+				run_sfx.play()
 			SPEED = RUN_SPEED
 			is_running = true
 			stamina -= 150*delta
@@ -152,6 +160,8 @@ func _physics_process(delta: float) -> void:
 			if animated_sprite.get_animation()!="running" or animated_sprite.get_animation()!="landing" or (animated_sprite.get_animation()=="landing" and animated_sprite.get_frame()==3):
 				animated_sprite.play("running")
 		elif control and Input.is_action_pressed("dash") and is_running and stamina>=0 and direction!=0 and is_on_floor(): 
+			if !run_sfx.is_playing():
+				run_sfx.play()
 			SPEED = RUN_SPEED
 			stamina -= 100*delta
 			stamina_timer.set_paused(true)
@@ -191,6 +201,7 @@ func _physics_process(delta: float) -> void:
 					respawn_timer.start(1)
 			elif collision.get_collider().name=="SPIKE":
 				if !respawning:
+					death_sfx.play()
 					respawning = true
 					sanity -= 20
 					p_light.set_enabled(true)
@@ -213,6 +224,7 @@ func _physics_process(delta: float) -> void:
 		p_light.set_texture_scale(0.1)
 		p_light.set_energy(1)
 		p_light.set_enabled(false)
+		
 	elif respawning:
 		p_light.set_texture_scale(p_light_scale+0.1)
 		p_light.set_energy(p_light_energy+0.02)
@@ -241,12 +253,12 @@ func _on_petni_trigger_body_entered(body: Node2D) -> void:
 		if !respawning:
 			respawning = true
 			p_light.set_enabled(true)
+			death_sfx.play()
 			respawn_timer.start(1)
 
 
 func _on_petni_trigger_2_body_entered(body: Node2D) -> void:
 	control = false
-	sanity -= 60
 	print(sanity)
 	freeze_timer.start(2)
 	tp_forward = true
@@ -256,6 +268,7 @@ func _on_petni_trigger_2_body_entered(body: Node2D) -> void:
 
 func _on_freeze_timeout() -> void:
 	control = true
+	death_sfx.play()
 	if !respawning:
 		respawning = true
 		p_light.set_enabled(true)
@@ -266,7 +279,6 @@ func _on_freeze_timeout() -> void:
 func _on_petni_trigger_3_body_entered(body: Node2D) -> void:
 	control = false
 	tp_forward = true
-	sanity -= 60
 	print(sanity)
 	freeze_timer.start(2)
 	sanity_drain_timer.start(0.5)
@@ -319,7 +331,7 @@ func _on_sanity_duration_timeout() -> void:
 
 
 func _on_sanity_drain_timeout() -> void:
-	sanity -= 2
+	sanity -= 1
 
 
 func _on_end_body_entered(body: Node2D) -> void:

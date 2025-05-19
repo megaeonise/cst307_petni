@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://dfh6duy1rhrxa"]
+[gd_scene load_steps=38 format=4 uid="uid://dfh6duy1rhrxa"]
 
 [ext_resource type="PackedScene" uid="uid://c4k6pubg1e5gp" path="res://scenes/player.tscn" id="2_bl13t"]
 [ext_resource type="Script" uid="uid://t25gvvtxwjmh" path="res://scenes/PlayerCamera.gd" id="2_iyx0m"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cack1enimoew4" path="res://assets/small tree rikth.png" id="9_gm488"]
 [ext_resource type="Script" uid="uid://cp1kppj4oa1a6" path="res://scenes/petni_text.gd" id="9_yk7ts"]
 [ext_resource type="SpriteFrames" uid="uid://c5oyy1smenx63" path="res://scenes/petni.tres" id="14_xrtyr"]
+[ext_resource type="AudioStream" uid="uid://pdfshpryf5it" path="res://assets/petni.wav" id="17_n74k2"]
 [ext_resource type="Texture2D" uid="uid://bu6dv1cu8kqve" path="res://assets/foreground.png" id="18_kay4s"]
 [ext_resource type="Script" uid="uid://d1tg2q1r3qvym" path="res://scenes/end.gd" id="19_c6rvn"]
 [ext_resource type="Texture2D" uid="uid://d3ohmdfdhgv3j" path="res://assets/boc_rikt.png" id="20_n74k2"]
@@ -250,6 +251,9 @@ metadata/_edit_lock_ = true
 
 [node name="TextVanish" type="Timer" parent="ParallaxBg/PetniBanyan/Panel"]
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="ParallaxBg/PetniBanyan/Panel"]
+stream = ExtResource("17_n74k2")
+
 [node name="Tutorial" type="Area2D" parent="ParallaxBg"]
 position = Vector2(2544, 64)
 
@@ -280,7 +284,7 @@ scale = Vector2(1.3, 1.3)
 texture = ExtResource("5_at5dv")
 
 [node name="Player" parent="ParallaxBg" instance=ExtResource("2_bl13t")]
-position = Vector2(0, 56)
+position = Vector2(79000, 56)
 
 [node name="CollisionShape2D" parent="ParallaxBg/Player" index="0"]
 metadata/_edit_lock_ = true
@@ -345,8 +349,15 @@ offset_left = -320.0
 offset_top = -56.0
 offset_right = 96.0
 offset_bottom = 64.0
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
 text = "Congratulations.
-You have reached your mama's home. "
+You have reached your mama's home. 
+Sound Attributions:
+Wind at door howling 4.wav by Bosk1 -- https://freesound.org/s/217186/-- License: Attribution 4.0
+Deep thunder clap 02.wav by klankbeeld -- https://freesound.org/s/321423/ -- License: Attribution 4.0
+Grassy Footstep 3 by OwlStorm -- https://freesound.org/s/151228/ -- License: Creative Commons 0
+Laser Element Only 2 by bubaproducer -- https://freesound.org/s/151017/ -- License: Attribution 4.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 

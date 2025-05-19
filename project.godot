@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="petni"
+config/name="Mamar Barir Poth"
 run/main_scene="uid://dfh6duy1rhrxa"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://b82loyjrjttyj"
+config/windows_native_icon="res://assets/tree rikth.ico"
 
 [display]
 

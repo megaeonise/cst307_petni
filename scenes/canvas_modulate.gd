@@ -2,6 +2,7 @@ extends CanvasModulate
 
 @onready var player = get_parent()
 @onready var flash: Timer = $FlashTimer
+@onready var thunder: AudioStreamPlayer2D = $Lightning
 var max_x = 0
 var max_x_divided = 0
 var rng = RandomNumberGenerator.new()
@@ -25,6 +26,7 @@ func _on_flash_timer_timeout() -> void:
 	print("lignting 2")
 	set_color(Color(1-max_x_divided/1.2,1-max_x_divided/1.2,1-max_x_divided/1.2,1))
 	flash.stop()
+	thunder.stop()
 
 
 func _on_lightning_timer_timeout() -> void:
@@ -35,6 +37,7 @@ func _on_lightning_timer_timeout() -> void:
 				print("flash")
 				set_color(Color(7,7,7,1))
 				flash.start(1.2)
+				thunder.play()
 
 
 func _on_end_body_entered(body: Node2D) -> void:

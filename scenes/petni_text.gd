@@ -2,7 +2,8 @@ extends RichTextLabel
 
 @export var chars = 0
 @onready var TextSpeed = get_node("../TextSpeed")
-@onready var TextVanish= get_node("../TextVanish")
+@onready var TextVanish = get_node("../TextVanish")
+@onready var Voice = get_node("../AudioStreamPlayer2D")
 @onready var panel = get_parent()
 @export var max_chars = 14
 @export var char_per_tick = 1
@@ -30,6 +31,7 @@ func _process(delta: float) -> void:
 
 func _on_petni_trigger_2_body_entered(body: Node2D) -> void:
 	speaking = true
+	Voice.play()
 	
 
 
@@ -45,7 +47,9 @@ func _on_text_vanish_timeout() -> void:
 	chars = 0
 	TextVanish.stop()
 	panel.set_visible(false)
+	Voice.stop()
 
 
 func _on_petni_trigger_3_body_entered(body: Node2D) -> void:
 	speaking = true
+	Voice.play()

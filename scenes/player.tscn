@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://c4k6pubg1e5gp"]
+[gd_scene load_steps=50 format=3 uid="uid://c4k6pubg1e5gp"]
 
 [ext_resource type="Script" uid="uid://hu5wng6y52as" path="res://scripts/player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://b5711tc7t8lbb" path="res://assets/windup jump rikth.png" id="2_fjrip"]
@@ -10,6 +10,11 @@
 [ext_resource type="SpriteFrames" uid="uid://c5oyy1smenx63" path="res://scenes/petni.tres" id="7_y4r1p"]
 [ext_resource type="Script" uid="uid://gqy83ws3hqig" path="res://scenes/player_dialogue.gd" id="8_smehm"]
 [ext_resource type="PackedScene" uid="uid://c1ff3vwpv2tmh" path="res://scenes/canvas_modulate.tscn" id="8_ur7pv"]
+[ext_resource type="AudioStream" uid="uid://b8dx6u4ii3ice" path="res://assets/321423__klankbeeld__deep-thunder-clap-02.wav" id="10_3v2ag"]
+[ext_resource type="AudioStream" uid="uid://c5fl0hcdnl5rx" path="res://assets/217186__bosk1__wind-at-door-howling-4.wav" id="11_d2wvv"]
+[ext_resource type="AudioStream" uid="uid://chslg5ltlt7wy" path="res://assets/151228__owlstorm__grassy-footstep-3.wav" id="13_jej6c"]
+[ext_resource type="AudioStream" uid="uid://ckf8qrtxd4we7" path="res://assets/run.wav" id="14_f1ej7"]
+[ext_resource type="AudioStream" uid="uid://uex2j08meqp" path="res://assets/151017__bubaproducer__laser-element-only-2.wav" id="14_oprun"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
 size = Vector2(43.5, 72)
@@ -333,6 +338,9 @@ metadata/_edit_lock_ = true
 [node name="LightningTimer" parent="Sanity" index="1"]
 wait_time = 2.0
 
+[node name="Lightning" type="AudioStreamPlayer2D" parent="Sanity"]
+stream = ExtResource("10_3v2ag")
+
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color(0, 0, 0, 1)
 offset_left = 32.0
@@ -352,6 +360,20 @@ script = ExtResource("8_smehm")
 [node name="TextSpeed" type="Timer" parent="Panel"]
 
 [node name="TextVanish" type="Timer" parent="Panel"]
+
+[node name="Wind" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_d2wvv")
+volume_db = -20.0
+autoplay = true
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_jej6c")
+
+[node name="Run" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_f1ej7")
+
+[node name="Death2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_oprun")
 
 [connection signal="timeout" from="Stamina" to="." method="_on_stamina_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]

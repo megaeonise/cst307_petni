@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://dfh6duy1rhrxa"]
+[gd_scene load_steps=34 format=4 uid="uid://dfh6duy1rhrxa"]
 
 [ext_resource type="PackedScene" uid="uid://c4k6pubg1e5gp" path="res://scenes/player.tscn" id="2_bl13t"]
 [ext_resource type="Script" uid="uid://t25gvvtxwjmh" path="res://scenes/PlayerCamera.gd" id="2_iyx0m"]
@@ -12,24 +12,34 @@
 [ext_resource type="Texture2D" uid="uid://b82loyjrjttyj" path="res://assets/tree rikth.png" id="6_jcd4p"]
 [ext_resource type="Texture2D" uid="uid://dj2hbvmgtrky6" path="res://assets/grass.png" id="6_si7kk"]
 [ext_resource type="Texture2D" uid="uid://cs2mqxd2mhpe3" path="res://assets/spikes rikth.png" id="7_pn65j"]
-[ext_resource type="Texture2D" uid="uid://csxydtxcqadcj" path="res://assets/petni.png" id="7_uacia"]
 [ext_resource type="Texture2D" uid="uid://fgfe4rpcjj7v" path="res://assets/mud rikth.png" id="8_5f8cm"]
 [ext_resource type="Script" uid="uid://d4j8f0lrxiuy7" path="res://scenes/petni_banyan.gd" id="8_yk7ts"]
 [ext_resource type="Texture2D" uid="uid://cack1enimoew4" path="res://assets/small tree rikth.png" id="9_gm488"]
 [ext_resource type="Script" uid="uid://cp1kppj4oa1a6" path="res://scenes/petni_text.gd" id="9_yk7ts"]
+[ext_resource type="SpriteFrames" uid="uid://c5oyy1smenx63" path="res://scenes/petni.tres" id="14_xrtyr"]
 [ext_resource type="Texture2D" uid="uid://bu6dv1cu8kqve" path="res://assets/foreground.png" id="18_kay4s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_spi1c"]
 texture = ExtResource("7_pn65j")
 texture_region_size = Vector2i(40, 80)
 0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13.3333, 13.3333, 13.3333, 13.3333, 13.3333, 40, -13.3333, 40)
+0:0/0/terrains_peering_bit/right_side = 0
+0:0/0/terrains_peering_bit/left_side = 0
 1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13.3333, 13.3333, 13.3333, 13.3333, 13.3333, 40, -13.3333, 40)
+1:0/0/terrains_peering_bit/right_side = 0
 
 [sub_resource type="TileSet" id="TileSet_rxl0m"]
 tile_size = Vector2i(80, 80)
 physics_layer_0/collision_layer = 1
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "spikes"
+terrain_set_0/terrain_0/color = Color(2.11775e-06, 0.419109, 0.574753, 1)
 sources/0 = SubResource("TileSetAtlasSource_spi1c")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_48ck1"]
@@ -52,35 +62,6 @@ texture_region_size = Vector2i(64, 96)
 tile_size = Vector2i(16, 8)
 sources/0 = SubResource("TileSetAtlasSource_6pvsh")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ajshl"]
-atlas = ExtResource("7_uacia")
-region = Rect2(0, 0, 90, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ghpyy"]
-atlas = ExtResource("7_uacia")
-region = Rect2(90, 0, 90, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_44saj"]
-atlas = ExtResource("7_uacia")
-region = Rect2(180, 0, 90, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_7mbro"]
-animations = [{
-"frames": [{
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_ajshl")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_ghpyy")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_44saj")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ff6ho"]
 size = Vector2(40, 200)
 
@@ -88,6 +69,12 @@ size = Vector2(40, 200)
 size = Vector2(40, 200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uacia"]
+size = Vector2(120, 208)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrtyr"]
+size = Vector2(120, 208)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_daiq8"]
 size = Vector2(120, 208)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w43qo"]
@@ -107,6 +94,7 @@ normal = Vector2(1, 0)
 distance = -136.0
 
 [node name="Node2D" type="Node2D"]
+metadata/_edit_vertical_guides_ = [3000.0]
 
 [node name="ParallaxBg" type="Node2D" parent="."]
 script = ExtResource("4_yk7ts")
@@ -167,18 +155,20 @@ metadata/_edit_lock_ = true
 
 [node name="SPIKE" type="TileMapLayer" parent="ParallaxBg"]
 position = Vector2(0, -200)
+tile_map_data = PackedByteArray("AABsAAMAAAABAAAAAABwAAMAAAABAAAAAABxAAMAAAAAAAAAAAB0AAMAAAABAAAAAAB1AAMAAAAAAAAAAAB4AAMAAAAAAAAAAAB3AAMAAAABAAAAAACRAAMAAAABAAAAAACiAAMAAAABAAAAAACjAAMAAAABAAAAAACmAAMAAAABAAAAAAA=")
 tile_set = SubResource("TileSet_rxl0m")
 metadata/_edit_lock_ = true
 
 [node name="MUD" type="TileMapLayer" parent="ParallaxBg"]
 position = Vector2(0, -200)
+tile_map_data = PackedByteArray("AACAAAMAAQAAAAAAAACDAAMAAQAAAAAAAACEAAMAAQAAAAAAAACJAAMAAQAAAAAAAACKAAMAAQAAAAAAAACLAAMAAQAAAAAAAACSAAMAAQAAAAAAAACgAAMAAQAAAAAAAACkAAMAAQAAAAAAAACqAAMAAQAAAAAAAAA=")
 tile_set = SubResource("TileSet_w43qo")
 metadata/_edit_lock_ = true
 
 [node name="TREE" type="TileMapLayer" parent="ParallaxBg"]
 position = Vector2(0, -200)
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAUAAsAAAAAAAAAAACGAAsAAAAAAAAAAACFAAsAAAAAAAAAAACDAAsAAAAAAAAAAAB6AAsAAAAAAAAAAAB+AAsAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAUAAsAAAAAAAAAAACGAAsAAAAAAAAAAACFAAsAAAAAAAAAAACDAAsAAAAAAAAAAAB6AAsAAAAAAAAAAAB+AAsAAAAAAAAAAAAeAQsAAAAAAAAAAAAkAQsAAAAAAAAAAAArAQsAAAAAAAAAAAA5AQsAAAAAAAAAAAByAQsAAAAAAAAAAAB2AQsAAAAAAAAAAAB6AQsAAAAAAAAAAAB/AQsAAAAAAAAAAAB9AQsAAAAAAAAAAACCAQsAAAAAAAAAAACGAQsAAAAAAAAAAACKAQsAAAAAAAAAAACNAQsAAAAAAAAAAACjAQsAAAAAAAAAAACnAQsAAAAAAAAAAACtAQsAAAAAAAAAAACwAQsAAAAAAAAAAACzAQsAAAAAAAAAAAC2AQsAAAAAAAAAAAC5AQsAAAAAAAAAAAC8AQsAAAAAAAAAAADAAQsAAAAAAAAAAADFAQsAAAAAAAAAAADKAQsAAAAAAAAAAADQAQsAAAAAAAAAAADNAQsAAAAAAAAAAADUAQsAAAAAAAAAAADXAQsAAAAAAAAAAADaAQsAAAAAAAAAAADdAQsAAAAAAAAAAADiAQsAAAAAAAAAAADnAQsAAAAAAAAAAADuAQsAAAAAAAAAAAD0AQsAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_q24x8")
 
 [node name="HouseRikth" type="Sprite2D" parent="ParallaxBg"]
@@ -201,7 +191,7 @@ target_path = NodePath("../Player")
 [node name="PetniBanyan" type="AnimatedSprite2D" parent="ParallaxBg"]
 modulate = Color(0.625597, 0.625597, 0.625597, 1)
 position = Vector2(4976, 40)
-sprite_frames = SubResource("SpriteFrames_7mbro")
+sprite_frames = ExtResource("14_xrtyr")
 autoplay = "default"
 frame_progress = 0.108628
 script = ExtResource("8_yk7ts")
@@ -255,11 +245,27 @@ metadata/_edit_lock_ = true
 [node name="TextVanish" type="Timer" parent="ParallaxBg/PetniBanyan/Panel"]
 
 [node name="Tutorial" type="Area2D" parent="ParallaxBg"]
-position = Vector2(2160, 64)
+position = Vector2(2544, 64)
 
 [node name="TutorialArea" type="CollisionShape2D" parent="ParallaxBg/Tutorial"]
 position = Vector2(4, -72)
 shape = SubResource("RectangleShape2D_uacia")
+metadata/_edit_lock_ = true
+
+[node name="Tutorial2" type="Area2D" parent="ParallaxBg"]
+position = Vector2(864, 64)
+
+[node name="TutorialArea" type="CollisionShape2D" parent="ParallaxBg/Tutorial2"]
+position = Vector2(4, -72)
+shape = SubResource("RectangleShape2D_xrtyr")
+metadata/_edit_lock_ = true
+
+[node name="Tutorial3" type="Area2D" parent="ParallaxBg"]
+position = Vector2(48, 64)
+
+[node name="TutorialArea" type="CollisionShape2D" parent="ParallaxBg/Tutorial3"]
+position = Vector2(4, -72)
+shape = SubResource("RectangleShape2D_daiq8")
 metadata/_edit_lock_ = true
 
 [node name="HouseRikth3" type="Sprite2D" parent="ParallaxBg"]
@@ -268,15 +274,21 @@ scale = Vector2(1.3, 1.3)
 texture = ExtResource("5_at5dv")
 
 [node name="Player" parent="ParallaxBg" instance=ExtResource("2_bl13t")]
+position = Vector2(0, 56)
+
+[node name="CollisionShape2D" parent="ParallaxBg/Player" index="0"]
 metadata/_edit_lock_ = true
 
-[node name="Panel" parent="ParallaxBg/Player" index="12"]
+[node name="Sprite2D" parent="ParallaxBg/Player" index="1"]
+metadata/_edit_lock_ = true
+
+[node name="Panel" parent="ParallaxBg/Player" index="17"]
 visible = false
 
 [node name="TREE2" type="TileMapLayer" parent="ParallaxBg"]
 position = Vector2(0, -200)
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAWAA0AAAAAAAAAAAB7AA0AAAAAAAAAAAB9AA0AAAAAAAAAAACBAA0AAAAAAAAAAACIAA0AAAAAAAAAAAASAA8AAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAWAA0AAAAAAAAAAAB7AA0AAAAAAAAAAAB9AA0AAAAAAAAAAACBAA0AAAAAAAAAAACIAA0AAAAAAAAAAAASAA8AAAAAAAAAAADBAA0AAAAAAAAAAADOAA0AAAAAAAAAAADwAA0AAAAAAAAAAAAGAQ0AAAAAAAAAAAD9AA0AAAAAAAAAAAAtAQ0AAAAAAAAAAAArAQ0AAAAAAAAAAAA4AQ0AAAAAAAAAAAA7AQ0AAAAAAAAAAAB3AQ0AAAAAAAAAAAB6AQ0AAAAAAAAAAAB/AQ0AAAAAAAAAAACDAQ0AAAAAAAAAAACIAQ0AAAAAAAAAAACNAQ0AAAAAAAAAAACkAQ0AAAAAAAAAAACmAQ0AAAAAAAAAAACuAQ0AAAAAAAAAAACzAQ0AAAAAAAAAAAC3AQ0AAAAAAAAAAAC9AQ0AAAAAAAAAAAC7AQ0AAAAAAAAAAADCAQ0AAAAAAAAAAADGAQ0AAAAAAAAAAADNAQ0AAAAAAAAAAADVAQ0AAAAAAAAAAADKAQ0AAAAAAAAAAADSAQ0AAAAAAAAAAADcAQ0AAAAAAAAAAADZAQ0AAAAAAAAAAADgAQ0AAAAAAAAAAADlAQ0AAAAAAAAAAADpAQ0AAAAAAAAAAADsAQ0AAAAAAAAAAADwAQ0AAAAAAAAAAAD0AQ0AAAAAAAAAAAD6AQ0AAAAAAAAAAAAAAg0AAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_spi1c")
 
 [node name="Foreground" type="Parallax2D" parent="ParallaxBg"]
@@ -316,6 +328,8 @@ debug_color = Color(0.766217, 0.166117, 1, 0.42)
 [connection signal="timeout" from="ParallaxBg/PetniBanyan/Panel/TextSpeed" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_text_speed_timeout"]
 [connection signal="timeout" from="ParallaxBg/PetniBanyan/Panel/TextVanish" to="ParallaxBg/PetniBanyan/Panel/RichTextLabel" method="_on_text_vanish_timeout"]
 [connection signal="body_entered" from="ParallaxBg/Tutorial" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/Tutorial2" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_2_body_entered"]
+[connection signal="body_entered" from="ParallaxBg/Tutorial3" to="ParallaxBg/Player/Panel/RichTextLabel" method="_on_tutorial_3_body_entered"]
 
 [editable path="ParallaxBg/Player"]
 [editable path="ParallaxBg/Player/Sanity"]

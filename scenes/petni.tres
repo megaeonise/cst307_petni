@@ -1,0 +1,32 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://c5oyy1smenx63"]
+
+[ext_resource type="Texture2D" uid="uid://csxydtxcqadcj" path="res://assets/petni.png" id="1_ey7av"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajshl"]
+atlas = ExtResource("1_ey7av")
+region = Rect2(0, 0, 90, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghpyy"]
+atlas = ExtResource("1_ey7av")
+region = Rect2(90, 0, 90, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44saj"]
+atlas = ExtResource("1_ey7av")
+region = Rect2(180, 0, 90, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ajshl")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ghpyy")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_44saj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]

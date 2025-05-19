@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 	if player.get_global_position().x>max_x:
 		max_x = player.get_global_position().x
 	max_x_divided = max_x/100000
-	set_color(Color(1-max_x_divided/1.2,1-max_x_divided/1.2,1-max_x_divided/1.2,1))
+	#set_color(Color(1-max_x_divided/1.2,1-max_x_divided/1.2,1-max_x_divided/1.2,1))
 
 			
 

@@ -9,6 +9,12 @@ extends CharacterBody2D
 @onready var timer: Timer = $Timer
 @onready var mud_timer: Timer = $Mud
 @onready var freeze_timer: Timer = $Freeze
+@onready var sanity_cooldown: Timer = $SanityCooldown
+@onready var sanity_modulate: CanvasModulate = $Sanity
+@onready var sanity_effect_timer: Timer = $SanityEffect
+@onready var sanity_effect_duration: Timer = $SanityDuration
+@onready var sanity_drain_timer: Timer = $SanityDrain
+@onready var petni: AnimatedSprite2D = $Petni
 @export var WALK_SPEED = 150.0
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
@@ -25,7 +31,7 @@ var is_jumping = false
 var tp_counter = 0
 var tp_forward = false
 var control = true
-@export var MAX_STAMINA = 200
+@export var MAX_STAMINA = 300
 @export var max_speed= Vector2(500, 600)
 @export var min_speed= Vector2(-500, -600)
 var stamina = MAX_STAMINA
@@ -35,6 +41,10 @@ var can_hang = true
 @export var coyote_time = 0.1
 @export var hang_range = 50
 @export var hang_length = 0.05
+var rng = RandomNumberGenerator.new()
+@onready var current_color = sanity_modulate.get_color()
+
+
 
 func _ready() -> void:
 	animated_sprite = $Sprite2D
@@ -78,6 +88,14 @@ func _physics_process(delta: float) -> void:
 		#Movement
 		is_dashing = Input.is_action_just_pressed("dash")
 		
+		if Input.is_action_just_pressed("mantra") and sanity_cooldown.is_stopped():
+			sanity += 20
+			if sanity >100:
+				sanity = 100
+			sanity_cooldown.start(1.5)
+			print("sanityup")
+		if sanity<0:
+			sanity = 0
 
 		
 		# Animation
@@ -95,7 +113,6 @@ func _physics_process(delta: float) -> void:
 		# Jump
 		if control and Input.is_action_just_pressed("jump") and ((!coyote_timer.is_stopped() and !is_dashing and !jump_charging and !is_jumping) or (is_on_floor() and !is_dashing)):
 			jump_charging = true
-			print("Why")
 			animated_sprite.play("charge")
 			jump_charge_timer = 0
 
@@ -109,7 +126,6 @@ func _physics_process(delta: float) -> void:
 				is_jumping = false
 		
 		if jump_charging:
-			print(jump_charge_timer)
 			jump_charge_timer += delta
 			if jump_charge_timer >= JUMP_CHARGE_TIME or Input.is_action_just_released("jump"):
 				velocity.y = JUMP_VELOCITY
@@ -132,9 +148,12 @@ func _physics_process(delta: float) -> void:
 			#if animated_sprite.get_animation()!="running" or animated_sprite.get_animation()!="landing" or (animated_sprite.get_animation()=="landing" and animated_sprite.get_frame()==3):
 				#animated_sprite.play("running")
 		else:
-			if stamina_timer.is_paused():
+			if stamina_timer.is_paused() and stamina<30:
 				stamina_timer.set_paused(false)
-				stamina_timer.start(1)
+				stamina_timer.start(3)
+			else:
+				if stamina<MAX_STAMINA and stamina>30:
+					stamina+=20*delta
 			if is_on_floor():
 				SPEED = WALK_SPEED
 			is_running = false
@@ -145,7 +164,7 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 		if stamina <= 50:
-			set_modulate(Color(1, cos(timer.get_time_left()), cos(timer.get_time_left()), 1))
+			set_modulate(Color(1.5, cos(timer.get_time_left()), cos(timer.get_time_left()), 1))
 		else:
 			set_modulate(Color(1,1,1,1))
 		
@@ -163,7 +182,7 @@ func _physics_process(delta: float) -> void:
 			elif collision.get_collider().name=="SPIKE":
 				if !respawning:
 					respawning = true
-					sanity -= 10
+					sanity -= 20
 					p_light.set_enabled(true)
 					respawn_timer.start(1)
 			elif collision.get_collider().name=="MUD":
@@ -203,6 +222,7 @@ func _on_stamina_timeout() -> void:
 func _on_mud_timeout() -> void:
 	WALK_SPEED = 150.0
 	RUN_SPEED = 280.0
+	sanity -= 10
 
 
 func _on_petni_trigger_body_entered(body: Node2D) -> void:
@@ -216,9 +236,11 @@ func _on_petni_trigger_body_entered(body: Node2D) -> void:
 
 func _on_petni_trigger_2_body_entered(body: Node2D) -> void:
 	control = false
-	print("why am i not frozen", control)
+	sanity -= 60
+	print(sanity)
 	freeze_timer.start(2)
 	tp_forward = true
+	sanity_drain_timer.start(0.5)
 	velocity = Vector2(0,0)
 
 
@@ -229,12 +251,49 @@ func _on_freeze_timeout() -> void:
 		p_light.set_enabled(true)
 		respawn_timer.start(1)
 	freeze_timer.stop()
-	print(tp_counter)
 
 
 func _on_petni_trigger_3_body_entered(body: Node2D) -> void:
 	control = false
-	print("why am i not frozen", control)
 	tp_forward = true
+	sanity -= 60
+	print(sanity)
 	freeze_timer.start(2)
+	sanity_drain_timer.start(0.5)
 	velocity = Vector2(0,0)
+
+
+func _on_sanity_cooldown_timeout() -> void:
+	sanity_cooldown.stop()
+
+
+func _on_sanity_effect_timeout() -> void:
+	print("sanitycheck", sanity)
+	current_color = sanity_modulate.get_color()
+	var proc = 0
+	if sanity<80:
+		if rng.randf()-(sanity/100)>0.7:
+			sanity_modulate.set_color(Color(rng.randf(),rng.randf(),rng.randf(),rng.randf()))
+			proc+=1
+			print("option1")
+			if rng.randf()-(sanity/100)>0.7:
+				print("shes there")
+				petni.set_visible(true)
+				petni.set_position(Vector2(rng.randi_range(200, 300), rng.randi_range(-100,100)))
+				proc+=1
+				petni.set_flip_h(!petni.is_flipped_h())
+				var random_scale = rng.randf_range(1,3)
+				petni.set_scale(Vector2(random_scale, random_scale))
+	if proc>0:
+		proc = 0
+		sanity_effect_duration.start(0.2+(1-sanity/100))
+		sanity_effect_timer.stop()
+
+func _on_sanity_duration_timeout() -> void:
+	sanity_modulate.set_color(current_color)
+	sanity_effect_timer.start(2)
+	petni.set_visible(false)
+
+
+func _on_sanity_drain_timeout() -> void:
+	sanity -= 2

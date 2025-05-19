@@ -15,7 +15,8 @@ extends CharacterBody2D
 @onready var sanity_effect_duration: Timer = $SanityDuration
 @onready var sanity_drain_timer: Timer = $SanityDrain
 @onready var petni: AnimatedSprite2D = $Petni
-@export var WALK_SPEED = 150.0
+@onready var current_position = Vector2.ZERO
+@export var WALK_SPEED = 120.0
 @export var RUN_SPEED = 280.0
 var SPEED = WALK_SPEED
 @export var JUMP_VELOCITY = -400.0
@@ -31,6 +32,8 @@ var is_jumping = false
 var tp_counter = 0
 var tp_forward = false
 var control = true
+var max_x = 0
+var max_x_divided = 0
 @export var MAX_STAMINA = 300
 @export var max_speed= Vector2(500, 600)
 @export var min_speed= Vector2(-500, -600)
@@ -48,6 +51,7 @@ var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
 	animated_sprite = $Sprite2D
+	current_position = petni.get_position()
 
 
 func _physics_process(delta: float) -> void:
@@ -56,6 +60,12 @@ func _physics_process(delta: float) -> void:
 	var p_light_energy = p_light.get_energy()
 	var direction := Input.get_axis("move_left", "move_right")
 	var vertical_direction := Input.get_axis("down", "up")
+	petni.set_position(current_position)
+	if sanity_effect_duration.is_stopped():
+		if global_position.x>max_x:
+			max_x = global_position.x
+			max_x_divided = max_x/100000
+			sanity_modulate.set_color(Color(1-max_x_divided/2,1-max_x_divided/2,1-max_x_divided/2,1))
 	if !respawning:
 		if not is_on_floor():
 			if coyote:
@@ -150,7 +160,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			if stamina_timer.is_paused() and stamina<30:
 				stamina_timer.set_paused(false)
-				stamina_timer.start(3)
+				stamina_timer.start(5)
 			else:
 				if stamina<MAX_STAMINA and stamina>30:
 					stamina+=20*delta
@@ -268,7 +278,7 @@ func _on_sanity_cooldown_timeout() -> void:
 
 
 func _on_sanity_effect_timeout() -> void:
-	print("sanitycheck", sanity)
+	print("sanitycheck", position, sanity)
 	current_color = sanity_modulate.get_color()
 	var proc = 0
 	if sanity<80:
@@ -278,12 +288,23 @@ func _on_sanity_effect_timeout() -> void:
 			print("option1")
 			if rng.randf()-(sanity/100)>0.7:
 				print("shes there")
+				control = false
 				petni.set_visible(true)
-				petni.set_position(Vector2(rng.randi_range(200, 300), rng.randi_range(-100,100)))
-				proc+=1
-				petni.set_flip_h(!petni.is_flipped_h())
 				var random_scale = rng.randf_range(1,3)
 				petni.set_scale(Vector2(random_scale, random_scale))
+				current_position = Vector2(rng.randi_range(-300-sanity, 300+sanity), rng.randi_range(-100,100))
+				petni.set_position(Vector2(rng.randi_range(-300-sanity, 300+sanity), rng.randi_range(-100,100)))
+				if petni.get_position().x<0 and petni.get_position().x>-100 and random_scale<2.5: #petni.get_position().x<0
+					petni.set_position(Vector2(-100, current_position.y))
+					current_position = Vector2(-100, current_position.y)
+					print("getaway")
+				if petni.get_position().x>0 and petni.get_position().x<100 and random_scale<2.5: #petni.get_position().x<0
+					petni.set_position(Vector2(100, current_position.y))
+					print("getaway")
+					current_position = Vector2(-100, current_position.y)
+				proc+=1
+				petni.set_flip_h(!petni.is_flipped_h())
+				velocity = Vector2(0,0)
 	if proc>0:
 		proc = 0
 		sanity_effect_duration.start(0.2+(1-sanity/100))
@@ -293,6 +314,8 @@ func _on_sanity_duration_timeout() -> void:
 	sanity_modulate.set_color(current_color)
 	sanity_effect_timer.start(2)
 	petni.set_visible(false)
+	control = true
+	
 
 
 func _on_sanity_drain_timeout() -> void:

@@ -30,7 +30,7 @@ func _on_lightning_timer_timeout() -> void:
 	if max_x>35000:
 		if rng.randf()>1-max_x_divided/1.2:
 			print("?")
-			if rng.randf()>0.7:
+			if rng.randf()>0.85:
 				print("flash")
-				set_color(Color(10,10,10,1))
+				set_color(Color(7,7,7,1))
 				flash.start(0.9)
